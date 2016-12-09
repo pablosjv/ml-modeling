@@ -12,22 +12,22 @@ def stopService(nameService):
         '--url', url,
         '--access-key', access_key,
         '--secret-key', secret_key,
-        'stop', nameService])
+        'rm', '--stop', nameService])
 
-#access_key = '377EC393AE145A755881'
-#secret_key = 'chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL'
-#url = 'http://185.24.5.232:8080/'
-#url_catalog = 'http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0'
-access_key = '23E487D6DA4A58F4AC74'
-secret_key = 'nFAC7Lp5iWkoNbkEVCDErJJMvH9rZVfAdd895T8e'
-url = 'http://185.24.5.196:8080/'
-url_catalog = 'http://185.24.5.196:8080/v1-catalog/templates/catalogPrueba:appServer:0' 
+access_key = '377EC393AE145A755881'
+secret_key = 'chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL'
+url = 'http://185.24.5.232:8080/'
+url_catalog = 'http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0'
+# access_key = '23E487D6DA4A58F4AC74'
+# secret_key = 'nFAC7Lp5iWkoNbkEVCDErJJMvH9rZVfAdd895T8e'
+# url = 'http://185.24.5.196:8080/'
+# url_catalog = 'http://185.24.5.196:8080/v1-catalog/templates/catalogPrueba:appServer:0'
 project_name = 'Mensajes'
 cont = 0
 parametros=[]
 threads = []
 
-time_out = '3000'
+time_out = 30.0
 
 #Peticion a la API para obtener el dockercompose
 auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
@@ -72,7 +72,7 @@ for param in itertools.product(*parametros):
         '--project-name', project_name,
         'start'])
 
-    threads.append(threading.Timer(20.0, stopService, args=[nameService]))
+    threads.append(threading.Timer(time_out, stopService, args=[nameService]))
     threads[cont].start()
 
 
