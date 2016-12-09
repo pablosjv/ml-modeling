@@ -15,30 +15,23 @@ def stopService(nameService):
         'rm', '--stop', nameService])
 
 
-access_key = '23E487D6DA4A58F4AC74'
-secret_key = 'nFAC7Lp5iWkoNbkEVCDErJJMvH9rZVfAdd895T8e'
-url = 'http://185.24.5.196:8080/'
-url_catalog = 'http://185.24.5.196:8080/v1-catalog/templates/catalogPrueba:appServer:0'
 project_name = 'Mensajes'
 cont = 0
 parametros=[]
 threads = []
 time_out = 30.0
 
-#
-# url_access = open('./configuration/url_access.txt', 'r')
-# access_key = str(url_access.readline().split('=')[1]).rstrip
-# secret_key = str(url_access.readline().split('=')[1]).rstrip()
-# url = str(url_access.readline().split('=')[1]).rstrip()
-# url_catalog = str(url_access.readline().split('=')[1]).rstrip()
-# url_access.close()
 
-print(type(url_catalog))
+url_access = open('./configuration/url_access.txt', 'r')
+access_key = str(url_access.readline().split('=')[1]).rstrip()
+secret_key = str(url_access.readline().split('=')[1]).rstrip()
+url = str(url_access.readline().split('=')[1]).rstrip()
+url_catalog = str(url_access.readline().split('=')[1]).rstrip()
+url_access.close()
 
 #Peticion a la API para obtener el dockercompose
 auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
 r = requests.get(url=url_catalog, auth=auth)
-print(r)
 content_all = r.json()
 content_dockercompose = str(content_all["files"]["docker-compose.yml"])
 
@@ -69,7 +62,7 @@ for param in itertools.product(*parametros):
         '--secret-key', secret_key,
         '--env-file', 'answers.txt',
         '--project-name', project_name,
-        'create'])
+        'create', nameService])
     call([
         './configuration/rancher-compose',
         '--url', url,
@@ -77,7 +70,7 @@ for param in itertools.product(*parametros):
         '--secret-key', secret_key,
         '--env-file', 'answers.txt',
         '--project-name', project_name,
-        'start'])
+        'start', nameService])
 
     threads.append(threading.Timer(time_out, stopService, args=[nameService]))
     threads[cont].start()

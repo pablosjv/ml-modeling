@@ -1,16 +1,13 @@
 version: '2'
 services:
-  appServer:
+  mensajes15:
     image: alpine
     environment:
-      A1: ${param1}
-      A2: ${param2}
-      A3: ${param3}
-      A4: ${param4}
+      PARAM1: ${PARAM1}
+      PARAM2: ${PARAM2}
     stdin_open: true
     entrypoint:
     - sh
     - -c
-    - echo $$A1 $$A2 $$A3 $$A4; sleep 10000
+    - echo $$PARAM1 $$PARAM2; sleep 1000
     tty: true
-
