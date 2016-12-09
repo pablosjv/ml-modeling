@@ -1,1 +1,2 @@
-./configuration/*
+/configuration/rancher
+/configuration/rancher-compose
