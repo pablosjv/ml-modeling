@@ -14,10 +14,14 @@ def stopService(nameService):
         '--secret-key', secret_key,
         'stop', nameService])
 
-access_key = '377EC393AE145A755881'
-secret_key = 'chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL'
-url = 'http://185.24.5.232:8080/'
-url_catalog = 'http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0'
+#access_key = '377EC393AE145A755881'
+#secret_key = 'chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL'
+#url = 'http://185.24.5.232:8080/'
+#url_catalog = 'http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0'
+access_key = '23E487D6DA4A58F4AC74'
+secret_key = 'nFAC7Lp5iWkoNbkEVCDErJJMvH9rZVfAdd895T8e'
+url = 'http://185.24.5.196:8080/'
+url_catalog = 'http://185.24.5.196:8080/v1-catalog/templates/catalogPrueba:appServer:0' 
 project_name = 'Mensajes'
 cont = 0
 parametros=[]

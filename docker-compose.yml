@@ -1,6 +1,6 @@
 version: '2'
 services:
-  mensajes15:
+  mensajes0:
     image: alpine
     environment:
       PARAM1: ${PARAM1}
