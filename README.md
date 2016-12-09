@@ -5,16 +5,18 @@ Este proyecto servirá para las tareas de ml-modeling en el Lab del BBVA. El obj
 ##Version actual
 
 Actualmente el scrip de python que ejecuta las instancias en rancher solo funciona para un determinado servicio. Este servicio se encuentra en el catalogo: https://github.com/pablosjv/rancher-catalog.git
-Debes añadir este catalogo a tu rancher. El servicio se llama TestCatalog y la version es la 0
+Debes añadir este catalogo a tu rancher. El servicio se llama TestCatalog y la version es la 0.
 
 ## Getting Started
 
 Para conseguir que funcione el programa se deben de añadir a la carpeta configuration los siguientes archivos
 
-### Rancher CLI y rancher-compose
+<!-- ### Rancher CLI y rancher-compose
 
 Es necesario añadir a la carpeta configuration la version compatible con tu sistema operativo de la rancher CLI y rancher-compose. Puedes descargar estos archivos desde la pagina de tu rancher. En la esquina inferior derecha haz click en RancherCLI y selecciona tu sistema operativo para el rancherCLI y el rancher-compose
 
+####ACTUALIZACION:
+Esto ya no será necesario cuando dockericemos el funcionamiento. Habrá que quitar del gitignore el rancher y el rancher-compose -->
 
 ### Fichero url_acces.txt
 
@@ -31,3 +33,12 @@ url_catalog=http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nomb
 ### Fichero entradas.txt
 
 Por defecto en la version actual esta añadido.
+
+##Servicios "Dockerizados"
+
+El programa esta preparado para funcionar en container de docker. Para hacer que esto funcione se deben ejecutar los siguientes comandos en el directorio donde se encuentre el proyecto:
+
+```
+docker build -t my-app-name .
+docker run -it --rm --name my-running-app-name lanzador-python
+```

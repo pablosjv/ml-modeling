@@ -21,7 +21,7 @@ parametros=[]
 threads = []
 time_out = 30.0
 
-
+#Lectura de parametros para las url y las keys
 url_access = open('./configuration/url_access.txt', 'r')
 access_key = str(url_access.readline().split('=')[1]).rstrip()
 secret_key = str(url_access.readline().split('=')[1]).rstrip()
