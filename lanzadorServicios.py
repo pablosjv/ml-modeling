@@ -6,32 +6,24 @@ from subprocess import call
 import threading
 
 
-
 def stopService(nameService):
     call([
         './rancher',
         '--url', url,
         '--access-key', access_key,
-        '--secret-key', secret_key, 
+        '--secret-key', secret_key,
         'stop', nameService])
 
-
-#access_key = '377EC393AE145A755881'
-#secret_key = 'chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL'
-#url = 'http://185.24.5.232:8080/'
-#url_catalog = 'http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0'
-#project_name = 'Mensajes'
-
-url = 'http://185.24.5.196:8080/'
-url_catalog = 'http://185.24.5.196:8080/v1-catalog/templates/ml-modelling:TestCatalog:0' 
-access_key = '23E487D6DA4A58F4AC74'
-secret_key = 'nFAC7Lp5iWkoNbkEVCDErJJMvH9rZVfAdd895T8e'
+access_key = '377EC393AE145A755881'
+secret_key = 'chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL'
+url = 'http://185.24.5.232:8080/'
+url_catalog = 'http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0'
 project_name = 'Mensajes'
-accessConfig = '--url ' + url + ' --access-key ' + access_key + ' --secret-key ' + secret_key
-
 cont = 0
 parametros=[]
 threads = []
+
+time_out = '3000'
 
 #Peticion a la API para obtener el dockercompose
 auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
@@ -43,7 +35,7 @@ content_dockercompose = str(content_all["files"]["docker-compose.yml"])
 entradas = open('entradas.txt', 'r')
 for line in entradas:
     parametros.append(line.split('=')[1].split(', '))
-entradas.close()
+entradas.close
 
 #iteracion para lanzar las combinaciones entre los parametros de entrada
 for param in itertools.product(*parametros):
@@ -58,24 +50,23 @@ for param in itertools.product(*parametros):
         'mensajes{num}'.format(num=cont)))
     dockercompose.close()
     nameService = 'mensajes{num}'.format(num=cont)
-
     #Llamadas a rancher-compose
     call([
-        './rancher-compose ',
+        './rancher-compose',
         '--url', url,
         '--access-key', access_key,
         '--secret-key', secret_key,
         '--env-file', 'answers.txt',
         '--project-name', project_name,
-        'create', nameService])
+        'create'])
     call([
-        './rancher-compose ', 
+        './rancher-compose',
         '--url', url,
         '--access-key', access_key,
         '--secret-key', secret_key,
         '--env-file', 'answers.txt',
         '--project-name', project_name,
-        'start', nameService])
+        'start'])
 
     threads.append(threading.Timer(20.0, stopService, args=[nameService]))
     threads[cont].start()
