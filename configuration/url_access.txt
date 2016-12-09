@@ -1,0 +1,4 @@
+access_key=377EC393AE145A755881
+secret_key=chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL
+url=http://185.24.5.232:8080/
+url_catalog=http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0
