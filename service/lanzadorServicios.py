@@ -15,7 +15,7 @@ def stopService(name_stack):
         'rm', '--stop', name_stack])
 
 
-project_name = 'Mensajes'
+project_name = 'Model'
 cont = 0
 parametros=[]
 parametrosNombre=[]
@@ -52,12 +52,6 @@ for param in itertools.product(*parametros):
     for j in range(len(parametrosNombre)):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
     answers.close()
-    #Cambio de nombre de servicio en el dockercompose
-    dockercompose = open('docker-compose.yml', 'w')
-    dockercompose.write(content_dockercompose.replace(
-        'mensajes1',
-        'mensajes{num}'.format(num=cont)))
-    dockercompose.close()
     project_name = 'mensajes{num}'.format(num=cont)
     #Llamadas a rancher-compose
     call([

@@ -1,2 +1,4 @@
-PARAM1=Hola
-PARAM2=Albus
+PARAM1=Buenas Tardes
+
+PARAM2=Dumbeldor
+
