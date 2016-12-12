@@ -1,13 +1,15 @@
-version: '2'
+version: '0'
 services:
-  mensajes15:
-    image: alpine
+  lanzadorServicios:
+    image: ignacioibanez/ml-modeling
     environment:
-      PARAM1: ${PARAM1}
-      PARAM2: ${PARAM2}
+      entradas: ${ENTRADAS}
+      access_key: ${ACCESS_KEY}
+      secret_key: ${SECRET_KEY}
+      url: ${URL}
+      url_catalog: ${URL_CATALOG}
     stdin_open: true
     entrypoint:
-    - sh
-    - -c
-    - echo $$PARAM1 $$PARAM2; sleep 1000
+      - 
+      - python lanzadorServicios.py $$entradas $$access-key $$secret-key $$url $$url_catalog
     tty: true

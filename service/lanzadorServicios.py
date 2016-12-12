@@ -8,7 +8,7 @@ import threading
 
 def stopService(nameService):
     call([
-        './configuration/rancher',
+        './exec/rancher',
         '--url', url,
         '--access-key', access_key,
         '--secret-key', secret_key,
@@ -23,7 +23,7 @@ threads = []
 time_out = 30.0
 
 #Lectura de parametros para las url y las keys
-url_access = open('./configuration/url_access.txt', 'r')
+url_access = open('./exec/url_access.txt', 'r')
 access_key = str(url_access.readline().split('=')[1]).rstrip()
 secret_key = str(url_access.readline().split('=')[1]).rstrip()
 url = str(url_access.readline().split('=')[1]).rstrip()
@@ -37,7 +37,7 @@ content_all = r.json()
 content_dockercompose = str(content_all["files"]["docker-compose.yml"])
 
 #Lectura de los parametros de entrada
-entradas = open('./configuration/entradas.txt', 'r')
+entradas = open('./exec/entradas.txt', 'r')
 for line in entradas:
     parametrosNombre.append(line[0:line.index("=")])
     parametros.append(line.split('=')[1].split(', '))
@@ -59,7 +59,7 @@ for param in itertools.product(*parametros):
     nameService = 'mensajes{num}'.format(num=cont)
     #Llamadas a rancher-compose
     call([
-        './configuration/rancher-compose',
+        './exec/rancher-compose',
         '--url', url,
         '--access-key', access_key,
         '--secret-key', secret_key,
@@ -67,7 +67,7 @@ for param in itertools.product(*parametros):
         '--project-name', project_name,
         'create', nameService])
     call([
-        './configuration/rancher-compose',
+        './exec/rancher-compose',
         '--url', url,
         '--access-key', access_key,
         '--secret-key', secret_key,
