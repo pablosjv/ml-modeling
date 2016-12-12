@@ -42,7 +42,8 @@ entradas = yaml.load(entradas.text)
 for parametro in entradas:
     parametrosNombre.append(parametro)
     parametros.append(entradas[parametro])
-
+parametrosNombre = parametrosNombre[::-1]
+parametros = parametros[::-1]
 # entradas = open('./entradas.txt', 'r')
 # for line in entradas:
 #     parametrosNombre.append(line[0:line.index(">")])
@@ -57,6 +58,7 @@ for param in itertools.product(*parametros):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
     answers.close()
     project_name = 'mensajes{num}'.format(num=cont)
+    print param
     #Llamadas a rancher-compose
     call([
         './exec/rancher-compose',

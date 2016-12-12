@@ -1,4 +1,2 @@
-PARAM1=Buenas Tardes
-
-PARAM2=Dumbeldor
-
+PARAM1=Buenos Dias
+PARAM2=Hermione
