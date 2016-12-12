@@ -34,6 +34,9 @@ auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
 r = requests.get(url=url_catalog, auth=auth)
 content_all = r.json()
 content_dockercompose = str(content_all["files"]["docker-compose.yml"])
+docker_compose = open('docker-compose.yml', 'w')
+docker_compose.write(content_dockercompose)
+docker_compose.close()
 
 #https://dl.dropboxusercontent.com/u/92981874/entradas.yml
 entradas = requests.get(url=url_entradas)
