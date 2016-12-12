@@ -18,6 +18,7 @@ def stopService(nameService):
 project_name = 'Mensajes'
 cont = 0
 parametros=[]
+parametrosNombre=[]
 threads = []
 time_out = 30.0
 
@@ -38,6 +39,7 @@ content_dockercompose = str(content_all["files"]["docker-compose.yml"])
 #Lectura de los parametros de entrada
 entradas = open('./configuration/entradas.txt', 'r')
 for line in entradas:
+    parametrosNombre.append(line[0:line.index("=")])
     parametros.append(line.split('=')[1].split(', '))
 entradas.close()
 
@@ -45,7 +47,8 @@ entradas.close()
 for param in itertools.product(*parametros):
     #Escritura del fichero de respuestas
     answers = open('answers.txt', 'w')
-    answers.write('PARAM1=' + param[0] + '\nPARAM2=' + param[1])
+    for j in range(len(parametrosNombre)):
+        answers.write(parametrosNombre[j]+'='+"\""+str(param)+"\""+'\n')
     answers.close()
     #Cambio de nombre de servicio en el dockercompose
     dockercompose = open('docker-compose.yml', 'w')

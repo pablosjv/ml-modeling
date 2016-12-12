@@ -1,3 +1,2 @@
-PARAM1=Buenas Tardes
-
-PARAM2=Dumbeldor
+PARAM1="('Buenas Tardes\n', 'Dumbeldor\n')"
+PARAM2="('Buenas Tardes\n', 'Dumbeldor\n')"
