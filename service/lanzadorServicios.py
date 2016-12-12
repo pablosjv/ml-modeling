@@ -4,7 +4,7 @@ import requests
 import itertools
 from subprocess import call
 import threading
-
+import yaml
 
 def stopService(name_stack):
     call([
@@ -23,14 +23,11 @@ threads = []
 time_out = 30.0
 
 #Lectura de parametros para las url y las keys
-access_key = str(sys.argv[1])
-print(access_key)
-secret_key = str(sys.argv[2])
-print(secret_key)
-url = str(sys.argv[3])
-print(url)
-url_catalog = str(sys.argv[4])
-print(url_catalog)
+url_entradas = str(sys.argv[1])
+access_key = str(sys.argv[2])
+secret_key = str(sys.argv[3])
+url = str(sys.argv[4])
+url_catalog = str(sys.argv[5])
 
 #Peticion a la API para obtener el dockercompose
 auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
@@ -38,12 +35,19 @@ r = requests.get(url=url_catalog, auth=auth)
 content_all = r.json()
 content_dockercompose = str(content_all["files"]["docker-compose.yml"])
 
+#https://dl.dropboxusercontent.com/u/92981874/entradas.yml
+entradas = requests.get(url=url_entradas)
+entradas = yaml.load(entradas.text)
 #Lectura de los parametros de entrada
-entradas = open('./entradas.txt', 'r')
-for line in entradas:
-    parametrosNombre.append(line[0:line.index(">")])
-    parametros.append(line.split('>')[1].split(', '))
-entradas.close()
+for parametro in entradas:
+    parametrosNombre.append(parametro)
+    parametros.append(entradas[parametro])
+
+# entradas = open('./entradas.txt', 'r')
+# for line in entradas:
+#     parametrosNombre.append(line[0:line.index(">")])
+#     parametros.append(line.split('>')[1].split(', '))
+# entradas.close()
 
 #iteracion para lanzar las combinaciones entre los parametros de entrada
 for param in itertools.product(*parametros):
