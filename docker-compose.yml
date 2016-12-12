@@ -10,6 +10,7 @@ services:
       url_catalog: ${URL_CATALOG}
     stdin_open: true
     entrypoint:
-      - 
-      - python lanzadorServicios.py $$entradas $$access-key $$secret-key $$url $$url_catalog
+      - sh
+      - echo $$entradas >> entradas.txt;
+      - python lanzadorServicios.py $$access-key $$secret-key $$url $$url_catalog
     tty: true

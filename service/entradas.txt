@@ -1,0 +1,2 @@
+PARAM1>Hola, Saludos, Buenos Dias, Buenas Tardes
+PARAM2>Albus, Snape, Voldemort, Dumbeldor
