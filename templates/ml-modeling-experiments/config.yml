@@ -1,0 +1,4 @@
+name: ml-modeling
+description: |
+  Lanzador de experimentos para diferentes configuraciones de un stack del catalogo dado.
+version: 1.0.0

@@ -1,0 +1,27 @@
+.catalog:
+    name: "ml-modeling"
+    version: "v0.1"
+    description: "Lanzador de experimentos para diferentes configuraciones de un stack del catalogo dado."
+    questions:
+        - variable: ACCESS_KEY
+          label: "Acces key para acceder a rancher"
+          required: true
+          type: "string"
+        - variable: SECRET_KEY
+          label: "Secret para el acceso a reancher"
+          required: true
+          type: "string"
+        - variable: URL
+          label: "url donde se localiza el rancher"
+          default: "http://url_de_ejemlo_donde_este_tu_rancher/"
+          required: true
+          type: "string"
+        - variable: URL_CATALOG
+          label: "Url donde se localiza el stack del catalogo con el que experimentar"
+          default: "http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0"
+          required: true
+          type: "string"
+        - variable: URL_ENTRADAS
+          label: "url donde se encuentra el archivo donde leer la lista de parametros."
+          required: true
+          type: "string"
