@@ -3,7 +3,6 @@ services:
   lanzadorServicios:
     image: ignacioibanez/ml-modeling
     environment:
-      entradas: ${ENTRADAS}
       access_key: ${ACCESS_KEY}
       secret_key: ${SECRET_KEY}
       url: ${URL}
