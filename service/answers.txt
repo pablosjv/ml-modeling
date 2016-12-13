@@ -1,2 +1,2 @@
 PARAM1=Buenos Dias
-PARAM2=Hermione
+PARAM2=18

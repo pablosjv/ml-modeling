@@ -1,3 +1,4 @@
+# coding=utf-8
 import json
 import sys
 import requests
@@ -49,24 +50,24 @@ entradas = yaml.load(entradas.text)
 #parametrosNombre = parametrosNombre[::-1]
 #parametros = parametros[::-1]
 #Lo mismo que lo de arriba pero teniendo en cuenta diferentes formas de configuración
-#Las distintas formas que se consideran son: parametroNombre{n}
+#Las distintas formas que se consideran son: parametroNombre->n
 #1. [valorInicial:valorFinal:Salto] -> Lineal
 #2. [valorInicial:valorFinal:Función] -> Otro tipo de funcion
 #3. [un String]
 for parametro in entradas:
     parametrosNombre.append(parametro)
-    opcion = parametro[parametro.index("{"):parametro.index("}")]
-    if(opcion==1):
-        valores = entradas[parametro][1:len(opcion)-1].split(':')
-        valorInicial = valores[0]
-        valorFinal = valores[1]
-        valorSalto = valores[2]
+    opcion = entradas[parametro]["type"] #parametro[parametro.index("{"):parametro.index("}")]
+    if(opcion=="lineal"):
+        valorInicial = entradas[parametro]["initial-value"]
+        valorFinal = entradas[parametro]["final-value"]
+        valorSalto = entradas[parametro]["interval"]
         opcionesParametro = numpy.arange(valorInicial, valorFinal, valorSalto)
         parametros.append(opcionesParametro.tolist())
-    else if(opcion==2):
-        opcionesParametro
-    else:
-        parametros.append(entradas[parametro])
+    elif(opcion==2):
+        #opcionesParametro
+        pass
+    elif(opcion=="absolute"):
+        parametros.append(entradas[parametro]["param"])
 parametrosNombre = parametrosNombre[::-1]
 parametros = parametros[::-1]
 
