@@ -16,7 +16,9 @@ def stopService(name_stack):
         '--secret-key', secret_key,
         'rm', '--stop', name_stack])
 
-
+call([
+    'echo',
+    'entró'])
 #project_name = 'Model'
 cont = 0
 parametros=[]
@@ -85,7 +87,9 @@ for param in itertools.product(*parametros):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
     answers.close()
     project_name = 'Model{num}'.format(num=cont)
-    print param
+    call([
+    'echo',
+    'está en el punto de crear stack'])
     #Llamadas a rancher-compose
     call([
         './exec/rancher-compose',
