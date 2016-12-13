@@ -15,7 +15,7 @@ def stopService(name_stack):
         'rm', '--stop', name_stack])
 
 
-project_name = 'Model'
+#project_name = 'Model'
 cont = 0
 parametros=[]
 parametrosNombre=[]
@@ -60,7 +60,7 @@ for param in itertools.product(*parametros):
     for j in range(len(parametrosNombre)):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
     answers.close()
-    project_name = 'mensajes{num}'.format(num=cont)
+    project_name = 'Model{num}'.format(num=cont)
     print param
     #Llamadas a rancher-compose
     call([

@@ -1,2 +1,2 @@
-PARAM1=Hola
-PARAM2=Harry
+PARAM1=Buenos Dias
+PARAM2=Hermione
