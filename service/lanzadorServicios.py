@@ -41,12 +41,27 @@ docker_compose.close()
 #https://dl.dropboxusercontent.com/u/92981874/entradas.yml
 entradas = requests.get(url=url_entradas)
 entradas = yaml.load(entradas.text)
-#Lectura de los parametros de entrada
+#Lectura de los parametros de entrada -> FUNCIONA BIEN PERO NO SON EL TIPO DE PARAMETROS QUE SE VAN A RECIBIR
+#for parametro in entradas:
+#    parametrosNombre.append(parametro)
+#    parametros.append(entradas[parametro])
+#parametrosNombre = parametrosNombre[::-1]
+#parametros = parametros[::-1]
+#Lo mismo que lo de arriba pero teniendo en cuenta diferentes formas de configuración
+#Las distintas formas que se consideran son: 
+#1. [valorInicial:valorFinal:Salto] -> Lineal
+#2. [valorInicial:valorFinal:Función] -> Otro tipo de funcion
+#3. [un String]
 for parametro in entradas:
     parametrosNombre.append(parametro)
-    parametros.append(entradas[parametro])
-parametrosNombre = parametrosNombre[::-1]
-parametros = parametros[::-1]
+    opcion = parametro[parametro.index("{")::]
+    if(opcion==1):
+        opcionesParametro = 
+    else if(opcion==2):
+        opcionesParametro
+    else:
+        opcionesParametro
+
 # entradas = open('./entradas.txt', 'r')
 # for line in entradas:
 #     parametrosNombre.append(line[0:line.index(">")])
