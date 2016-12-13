@@ -1,2 +1,0 @@
-PARAM1=Buenos Dias
-PARAM2=18
