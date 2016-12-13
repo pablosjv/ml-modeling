@@ -1,4 +1,4 @@
-version: '0'
+version: "0"
 services:
   lanzadorServicios:
     image: ignacioibanez/ml-modeling
