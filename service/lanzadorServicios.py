@@ -5,6 +5,7 @@ import itertools
 from subprocess import call
 import threading
 import yaml
+import numpy
 
 def stopService(name_stack):
     call([
@@ -48,19 +49,26 @@ entradas = yaml.load(entradas.text)
 #parametrosNombre = parametrosNombre[::-1]
 #parametros = parametros[::-1]
 #Lo mismo que lo de arriba pero teniendo en cuenta diferentes formas de configuración
-#Las distintas formas que se consideran son: 
+#Las distintas formas que se consideran son: parametroNombre{n}
 #1. [valorInicial:valorFinal:Salto] -> Lineal
 #2. [valorInicial:valorFinal:Función] -> Otro tipo de funcion
 #3. [un String]
 for parametro in entradas:
     parametrosNombre.append(parametro)
-    opcion = parametro[parametro.index("{")::]
+    opcion = parametro[parametro.index("{"):parametro.index("}")]
     if(opcion==1):
-        opcionesParametro = 
+        valores = entradas[parametro][1:len(opcion)-1].split(':')
+        valorInicial = valores[0]
+        valorFinal = valores[1]
+        valorSalto = valores[2]
+        opcionesParametro = numpy.arange(valorInicial, valorFinal, valorSalto)
+        parametros.append(opcionesParametro.tolist())
     else if(opcion==2):
         opcionesParametro
     else:
-        opcionesParametro
+        parametros.append(entradas[parametro])
+parametrosNombre = parametrosNombre[::-1]
+parametros = parametros[::-1]
 
 # entradas = open('./entradas.txt', 'r')
 # for line in entradas:
