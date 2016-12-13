@@ -42,3 +42,8 @@ El programa esta preparado para funcionar en container de docker. Para hacer que
 docker build -t my-app-name .
 docker run -it --rm --name my-running-app-name lanzador-python
 ```
+##Comando para ejecutar lanzadorServicios
+
+```
+python lanzadorServicios.py https://dl.dropboxusercontent.com/u/92981874/entradas.yml 23E487D6DA4A58F4AC74 nFAC7Lp5iWkoNbkEVCDErJJMvH9rZVfAdd895T8e http://185.24.5.196:8080/ http://185.24.5.196:8080/v1-catalog/templates/ml-modelling:TestCatalog:0
+``

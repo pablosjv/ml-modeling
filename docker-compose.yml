@@ -8,9 +8,8 @@ services:
       secret_key: ${SECRET_KEY}
       url: ${URL}
       url_catalog: ${URL_CATALOG}
+      url_entradas: ${URL_ENTRADAS}
     stdin_open: true
     entrypoint:
-      - sh
-      - echo $$entradas >> entradas.txt;
-      - python lanzadorServicios.py $$access-key $$secret-key $$url $$url_catalog
+      - python lanzadorServicios.py $$url_entradas $$access-key $$secret-key $$url $$url_catalog
     tty: true
