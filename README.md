@@ -2,6 +2,9 @@
 
 Este proyecto servirá para las tareas de ml-modeling en el Lab del BBVA. El objetivo actual es lanzar varias instancias de un stack desde el catalogo de rancher con diferentes configuraciones que se darán mediante una lista. Este proyecto tiene dos partes diferenciadas. Una es la parte donde se aloja el script de python y su correspondiente dockerizacion. La segunda es la carpeta que añadirá este servicio como stack del catalogo de rancher para que se pueda lanzar desde ahi. Estas dos partes se describirán más en detalle a continuación.
 
+##Nota sobre la version actual
+
+Para pruebas, ahora mismo esta configurado el script de python de tal forma que se borran los stacks lanzados pasado un tiempo determinado. De momento solo queremos comprobar que lanza los stacks correctamente desde rancher y docker.
 
 ## dockerizacion python script
 
