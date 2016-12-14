@@ -16,7 +16,7 @@ def stopService(name_stack):
         '--secret-key', secret_key,
         'rm', '--stop', name_stack])
 
-print "ENTRÓ EN EL LANZADOR DE STACKS"
+sys.stdout.write("ENTRÓ EN EL LANZADOR DE STACKS\n")
 #project_name = 'Model'
 cont = 0
 parametros=[]
@@ -26,30 +26,32 @@ time_out = 30.0
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
-print "url de las entradas:", url_entradas
+sys.stdout.write("url de las entradas:"+url_entradas+"\n")
 access_key = str(sys.argv[2])
-print "access key:", access_key
+sys.stdout.write("access key:"+access_key+"\n")
 secret_key = str(sys.argv[3])
-print "secret key:", secret_key
+sys.stdout.write("secret key:"+secret_key+"\n")
 url = str(sys.argv[4])
-print "url del rancher:", url
+sys.stdout.write("url del rancher:"+url+"\n")
 url_catalog = str(sys.argv[5])
-print "url del stack a lanzar:", url_catalog
+sys.stdout.write("url del stack a lanzar:"+url_catalog+"\n")
+
 
 #Peticion a la API para obtener el dockercompose
 auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
 r = requests.get(url=url_catalog, auth=auth)
 content_all = r.json()
-print "Obtenido el objeto JSON de la API"
+sys.stdout.write("Obtenido el objeto JSON de la API\n")
 content_dockercompose = str(content_all["files"]["docker-compose.yml"])
 docker_compose = open('docker-compose.yml', 'w')
 docker_compose.write(content_dockercompose)
 docker_compose.close()
 
+
 #https://dl.dropboxusercontent.com/u/92981874/entradas.yml
 entradas = requests.get(url=url_entradas)
 entradas = yaml.load(entradas.text)
-print "Obtenido el fichero de configuracion"
+sys.stdout.write("Obtenido el fichero de configuracion\n")
 
 #Lectura de los parametros de entrada -> FUNCIONA BIEN PERO NO SON EL TIPO DE PARAMETROS QUE SE VAN A RECIBIR
 #for parametro in entradas:
@@ -78,7 +80,7 @@ for parametro in entradas:
         parametros.append(entradas[parametro]["param"])
 parametrosNombre = parametrosNombre[::-1]
 parametros = parametros[::-1]
-print "Obtenidos los parametros"
+sys.stdout.write("Obtenidos los parametros\n")
 
 # entradas = open('./entradas.txt', 'r')
 # for line in entradas:
@@ -94,7 +96,7 @@ for param in itertools.product(*parametros):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
     answers.close()
     project_name = 'Model{num}'.format(num=cont)
-    print "Preparado para lanzar stack"
+    sys.stdout.write("Preparado para lanzar stack\n")
     #Llamadas a rancher-compose
     call([
         './exec/rancher-compose',
