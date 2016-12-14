@@ -10,7 +10,8 @@ services:
       URL_ENTRADAS: ${URL_ENTRADAS}
     stdin_open: true
     entrypoint:
-      - sh
-      - -c
-      - python lanzadorServicios.py $$URL_ENTRADAS $$ACCESS_KEY $$SECRET_KEY $$URL $$URL_CATALOG
+        - sh
+        - -c
+        - python lanzadorServicios.py $$URL_ENTRADAS $$ACCESS_KEY $$SECRET_KEY $$URL $$URL_CATALOG
+        - sleep 100;
     tty: true
