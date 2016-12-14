@@ -47,9 +47,9 @@ docker_compose = open('docker-compose.yml', 'w')
 docker_compose.write(content_dockercompose)
 docker_compose.close()
 
-
+print "blah"
 #https://dl.dropboxusercontent.com/u/92981874/entradas.yml
-entradas = requests.get(url=url_entradas)
+entradas = requests.get(url=url_entradas, verify=False)
 entradas = yaml.load(entradas.text)
 sys.stdout.write("Obtenido el fichero de configuracion\n")
 
