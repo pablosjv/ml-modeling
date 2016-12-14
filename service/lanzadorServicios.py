@@ -16,9 +16,7 @@ def stopService(name_stack):
         '--secret-key', secret_key,
         'rm', '--stop', name_stack])
 
-call([
-    'echo',
-    'entró'])
+print "ENTRÓ EN EL LANZADOR DE STACKS"
 #project_name = 'Model'
 cont = 0
 parametros=[]
@@ -28,15 +26,21 @@ time_out = 30.0
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
+print "url de las entradas:", url_entradas
 access_key = str(sys.argv[2])
+print "access key:", access_key
 secret_key = str(sys.argv[3])
+print "secret key:", secret_key
 url = str(sys.argv[4])
+print "url del rancher:", url
 url_catalog = str(sys.argv[5])
+print "url del stack a lanzar:", url_catalog
 
 #Peticion a la API para obtener el dockercompose
 auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
 r = requests.get(url=url_catalog, auth=auth)
 content_all = r.json()
+print "Obtenido el objeto JSON de la API"
 content_dockercompose = str(content_all["files"]["docker-compose.yml"])
 docker_compose = open('docker-compose.yml', 'w')
 docker_compose.write(content_dockercompose)
@@ -45,6 +49,8 @@ docker_compose.close()
 #https://dl.dropboxusercontent.com/u/92981874/entradas.yml
 entradas = requests.get(url=url_entradas)
 entradas = yaml.load(entradas.text)
+print "Obtenido el fichero de configuracion"
+
 #Lectura de los parametros de entrada -> FUNCIONA BIEN PERO NO SON EL TIPO DE PARAMETROS QUE SE VAN A RECIBIR
 #for parametro in entradas:
 #    parametrosNombre.append(parametro)
@@ -72,6 +78,7 @@ for parametro in entradas:
         parametros.append(entradas[parametro]["param"])
 parametrosNombre = parametrosNombre[::-1]
 parametros = parametros[::-1]
+print "Obtenidos los parametros"
 
 # entradas = open('./entradas.txt', 'r')
 # for line in entradas:
@@ -87,9 +94,7 @@ for param in itertools.product(*parametros):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
     answers.close()
     project_name = 'Model{num}'.format(num=cont)
-    call([
-    'echo',
-    'está en el punto de crear stack'])
+    print "Preparado para lanzar stack"
     #Llamadas a rancher-compose
     call([
         './exec/rancher-compose',
