@@ -17,18 +17,3 @@
 
 
 **NOTA IMPORTANTE: Hay que tener en cuenta que las url del rancher y del stack del catalogo tienen que ser accesibles desde nuestro host.**
-
-
-### Usage:
-
- Select Apache Zookeeper from catalog.
-
- Enter the number of nodes, mem and refresh interval for the zk cluster. (set refresh data to 0 to disable dinamic config)
-
- Change the following zookeeper default parameters, if you need:
-
-- ZK_DATA_DIR="/opt/zk/data"
-- ZK_INIT_LIMIT="10"
-- ZK_MAX_CLIENT_CXNS="500"
-- ZK_SYNC_LIMIT="5"
-- ZK_TICK_TIME="2000"

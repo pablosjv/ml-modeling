@@ -24,7 +24,7 @@ A continuación, entraremos en nuestro catalogo y seleccionamos este stack. Debe
 3. Secret key del rancher
 4. Url del rancher:
 5. Url del stack del catalogo de rancher a lanzar. Esta url hace referencia a la API de rancher. Tendremos que buscar en esta el stack que queremos lanzar en la API. Tendrá la siguiente forma:
-> http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0
+`http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0`
 
 #### NOTA IMPORTANTE: Hay que tener en cuenta que las url del rancher y del stack del catalogo tienen que ser accesibles desde nuestro host.
 
