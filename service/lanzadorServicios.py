@@ -9,7 +9,6 @@ import yaml
 import numpy
 import logging
 
-# TODO: Modificar Dockerfil para realizar todas las instalaciones en un mismo comando RUN
 # TODO: Add an argeparser
 # import argparse or click
 
