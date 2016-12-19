@@ -1,58 +1,48 @@
-<!-- TODO: Terminar correctamente la documentación -->
-<!-- TODO: Añadir un readme para el catalogo  -->
-
 # ml-modeling
 
-Este proyecto servirá para las tareas de ml-modeling. El objetivo actual es lanzar varias instancias de un stack desde el catalogo de rancher con diferentes configuraciones que se darán mediante una lista. Este proyecto tiene dos partes diferenciadas. Una es la parte donde se aloja el script de python y su correspondiente dockerizacion. La segunda es la carpeta que añadirá este servicio como stack del catalogo de rancher para que se pueda lanzar desde ahi. Estas dos partes se describirán más en detalle a continuación.
+Este proyecto servirá para las tareas de ml-modeling. El objetivo actual es lanzar varias instancias de un stack desde el catalogo de rancher con diferentes configuraciones que se darán mediante una lista.
+
+Este proyecto tiene dos partes diferenciadas:
+* Una es la parte donde se aloja el script de python y su correspondiente dockerizacion.
+* La segunda es la carpeta que añadirá este servicio como stack del catalogo de rancher para que se pueda lanzar desde ahi.
+
+Estas dos partes se describirán más en detalle a continuación.
 
 ## IMPORTANTE: Notas sobre la version actual
 
 Para pruebas, ahora mismo esta configurado el script de python de tal forma que se borran los stacks lanzados pasado un tiempo determinado. De momento solo queremos comprobar que lanza los stacks correctamente desde rancher y docker.
-Este parametr
-
-## dockerizacion python script
-
-En la carpeta service tenemos la dockerizacion del script en python con todo lo necesario para convertirlo en un container independiente que lance servicios.
+Este parametro puede ser configurable en el futuro. Queda como tarea pendiente
 
 ## Getting Started
 
-Para conseguir que funcione el programa se deben de añadir a la carpeta configuration los siguientes archivos
+El programa esta pensado para ser lanzado como un stack de rancher desde el catalogo.
+En primer lugar debemos añadir a nuestro rancher como catalogo este repositorio. De esta forma tendremos acceso al servicio desde el catalogo.
+A continuación, entraremos en nuestro catalogo y seleccionamos este stack. Debemos elegir la version (version actual: v0.1) y se mostrarán las preguntas a rellenar. Estas preguntas serán:
 
-<!-- ### Rancher CLI y rancher-compose
+* Url de los parametros de configuración
+* Acces key del rancher
+* Secret key del rancher
+* Url del rancher: http://url_de_ejemlo_donde_este_tu_rancher/
+* Url del stack del catalogo de rancher a lanzar. Esta url hace referencia a la API de rancher. Tendremos que buscar en esta el stack que queremos lanzar en la API. Tendrá la siguiente forma:
+http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0
 
-Es necesario añadir a la carpeta configuration la version compatible con tu sistema operativo de la rancher CLI y rancher-compose. Puedes descargar estos archivos desde la pagina de tu rancher. En la esquina inferior derecha haz click en RancherCLI y selecciona tu sistema operativo para el rancherCLI y el rancher-compose
+##### NOTA IMPORTANTE: Hay que tener en cuenta que las url del rancher y del stack del catalogo tienen que ser accesibles desde nuestro host.
 
-####ACTUALIZACION:
-Esto ya no será necesario cuando dockericemos el funcionamiento. Habrá que quitar del gitignore el rancher y el rancher-compose -->
+Tras esto ya se puede lanzar nuestro stack
 
-### Fichero url_acces.txt
+## Dockerizacion python script
 
-Este fichero tiene que ser creado dentro de la carpeta configuration. El programa lo usará para obtener las claves de acceso para tu rancher, asi como la url donde este hubicado el rancher y el rancher catalog.
-El formato para el archivo tiene que ser el siguiente
+En la carpeta service tenemos la dockerizacion del script en python con todo lo necesario para convertirlo en un container independiente que lance servicios. La carpeta contiene tando el programa python como el Dockerfile que se usa para construir la imagen. En la carpeta exec se encuentran los ejecutables del rancherCLI y el rancher-compose. Estos son los de la version para linux.
 
-```
-access_key=Tu access key aqui
-secret_key=tu secret key aqui
-url=http://url_de_ejemlo_donde_este_tu_rancher/
-url_catalog=http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0
-```
+### Pruebas del script individuales
 
-### Fichero entradas.txt
-
-<!-- Por defecto en la version actual esta añadido. -->
-
-##Servicios "Dockerizados"
-
-El programa esta preparado para funcionar en container de docker. Para hacer que esto funcione se deben ejecutar los siguientes comandos en el directorio donde se encuentre el proyecto:
+Si se quiere probar el funcionamiento del script individualmente se debe tener en cuenta que este recibe argumentos. Estos argumentos corresponden a los mismos que hay que introducir en las preguntas y siguen el mismo orden con el que los hemos citado anteriormente.
+El comando por lo tanto tendrá la siguiente forma:
 
 ```
-docker build -t my-app-name .
-docker run -it --rm --name my-running-app-name lanzador-python
+python lanzadorServicios.py http://ml-modeling.neocities.org/entradas.txt access_key secret_key http://185.24.5.232:8080/ http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0
 ```
-##Comando para ejecutar lanzadorServicios
 
-<!-- NOTA IMPORTANTE: Recuerda comprobar la ip donde se hubican los host del rancher, debe ser la privada -->
+## Template para el catalogo
 
-```
-python lanzadorServicios.py http://ml-modeling.neocities.org/entradas.txt 377EC393AE145A755881 chk1Le5mmAJAMfB1ddNLbyL5yEC4sDPKmCV28bEL http://185.24.5.232:8080/ http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0
-``
+En la carpeta service es donde almacenamos todo lo referente al catalogo que saldrá en nuestro rancher. Tendremos que agregar este repositorio al nuestro rancher y saldrá el servicio de ml-modeling-experiments. Contiene todo lo necesario para que se muestre correctamente.

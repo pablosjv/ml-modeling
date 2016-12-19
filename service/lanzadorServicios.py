@@ -20,7 +20,7 @@ def stopService(name_stack):
         '--secret-key', secret_key,
         'rm', '--stop', name_stack])
 
-# TODO: Set up del logger en condiciones. Ahora todo esta a critical
+# TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
 # logger = logging.getLogger('services_launcher')
 
 logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
