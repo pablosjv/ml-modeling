@@ -1,3 +1,6 @@
+<!-- TODO: Terminar correctamente la documentación -->
+<!-- TODO: Añadir un readme para el catalogo  -->
+
 # ml-modeling
 
 Este proyecto servirá para las tareas de ml-modeling. El objetivo actual es lanzar varias instancias de un stack desde el catalogo de rancher con diferentes configuraciones que se darán mediante una lista. Este proyecto tiene dos partes diferenciadas. Una es la parte donde se aloja el script de python y su correspondiente dockerizacion. La segunda es la carpeta que añadirá este servicio como stack del catalogo de rancher para que se pueda lanzar desde ahi. Estas dos partes se describirán más en detalle a continuación.

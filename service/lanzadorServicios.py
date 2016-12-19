@@ -9,6 +9,10 @@ import yaml
 import numpy
 import logging
 
+# TODO: Modificar Dockerfil para realizar todas las instalaciones en un mismo comando RUN
+# TODO: Add an argeparser
+# import argparse or click
+
 def stopService(name_stack):
     call([
         './exec/rancher',
@@ -17,14 +21,18 @@ def stopService(name_stack):
         '--secret-key', secret_key,
         'rm', '--stop', name_stack])
 
+# TODO: Set up del logger en condiciones. Ahora todo esta a critical
 # logger = logging.getLogger('services_launcher')
 
 logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
+
+# TODO: Dar nombre bien a los esperimentos lanzados.
 #project_name = 'Model'
 cont = 0
 parametros=[]
 parametrosNombre=[]
 threads = []
+# TODO: Hacer configurable el parametro time_out
 time_out = 30.0
 
 #Lectura de parametros para las url y las keys
@@ -45,6 +53,8 @@ auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
 r = requests.get(url=url_catalog, auth=auth)
 content_all = r.json()
 logging.critical('Obtenido el objeto JSON de la API')
+
+content_dockercompose = str(content_all['files']['docker-compose.yml'])
 docker_compose = open('docker-compose.yml', 'w')
 docker_compose.write(content_dockercompose)
 docker_compose.close()
@@ -55,6 +65,7 @@ logging.critical('Obtenido el fichero de configuracion para los parametros')
 
 #Las distintas formas que se consideran son: parametroNombre->n
 #1. [valorInicial:valorFinal:Salto] -> Lineal
+#2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
 #3. [un String]
 for parametro in entradas:
     parametrosNombre.append(parametro)
@@ -76,7 +87,6 @@ for parametro in entradas:
 parametrosNombre = parametrosNombre[::-1]
 parametros = parametros[::-1]
 logging.critical('Obtenida la lista de posibles parametros')
-# sys.stdout.write("Obtenidos los parametros\n")
 
 
 #iteracion para lanzar las combinaciones entre los parametros de entrada
