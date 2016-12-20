@@ -31,8 +31,6 @@ cont = 0
 parametros=[]
 parametrosNombre=[]
 threads = []
-# TODO: Hacer configurable el parametro time_out
-time_out = 30.0
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
@@ -62,11 +60,13 @@ entradas = requests.get(url=url_entradas, verify=False)
 entradas = yaml.load(entradas.text)
 logging.critical('Obtenido el fichero de configuracion para los parametros')
 
+time_stop = entradas["time_stop"]
 #Las distintas formas que se consideran son: parametroNombre->n
 #1. [valorInicial:valorFinal:Salto] -> Lineal
 #2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
 #3. [un String]
-for parametro in entradas:
+parametros = entradas["PARAMS"]
+for parametro in parametros:
     parametrosNombre.append(parametro)
     opcion = entradas[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
     if(opcion=='lineal'):
@@ -116,7 +116,7 @@ for param in itertools.product(*parametros):
         '--project-name', project_name,
         'start'])
 
-    threads.append(threading.Timer(time_out, stopService, args=[project_name]))
+    threads.append(threading.Timer(time_stop, stopService, args=[project_name]))
     threads[cont].start()
 
     cont = cont + 1
