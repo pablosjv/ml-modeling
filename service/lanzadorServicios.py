@@ -97,8 +97,8 @@ logging.critical('Obtenido el fichero de configuracion para los parametros')
 #2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
 #3. [un String]
 
-parametros = entradas["PARAMS"]
-for parametro in parametros:
+#parametros = entradas["PARAMS"]
+for parametro in entradas:
     parametrosNombre.append(parametro)
     opcion = entradas[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
     if(opcion=='lineal'):
