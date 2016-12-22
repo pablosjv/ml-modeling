@@ -60,6 +60,7 @@ logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 # TODO: Dar nombre bien a los esperimentos lanzados.
 #project_name = 'Model'
 parametrosNombre=[]
+parametros = []
 threads = []
 
 #Lectura de parametros para las url y las keys
