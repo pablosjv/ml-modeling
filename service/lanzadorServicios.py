@@ -97,7 +97,7 @@ logging.critical('Obtenido el fichero de configuracion para los parametros')
 #1. [valorInicial:valorFinal:Salto] -> Lineal
 #2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
 #3. [un String]
-
+cont = 0
 #parametros = entradas["PARAMS"]
 for parametro in entradas:
     parametrosNombre.append(parametro)
