@@ -62,6 +62,7 @@ logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 parametrosNombre=[]
 parametros = []
 threads = []
+time_stop = 10
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
