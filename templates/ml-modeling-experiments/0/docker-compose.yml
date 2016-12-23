@@ -1,7 +1,7 @@
 version: '2'
 services:
   lanzadorServicios:
-    image: ignacioibanez/ml-modeling:1.0.7
+    image: ignacioibanez/ml-modeling:1.0.8
     environment:
       ACCESS_KEY: ${ACCESS_KEY}
       SECRET_KEY: ${SECRET_KEY}

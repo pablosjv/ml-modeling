@@ -119,6 +119,10 @@ for parametro in entradas:
 parametrosNombre = parametrosNombre[::-1]
 parametros = parametros[::-1]
 logging.critical('Obtenida la lista de posibles parametros')
+logging.critical("Nombre parametros:")
+logging.critical(parametrosNombre)
+logging.critical("Parametros:")
+logging.critical(parametros)
 
 
 #iteracion para lanzar las combinaciones entre los parametros de entrada
@@ -127,6 +131,7 @@ for param in itertools.product(*parametros):
     answers = open('answers.txt', 'w')
     for j in range(len(parametrosNombre)):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
+        logging.critical(parametrosNombre[j]+'='+str(param[j])+'\n')
     answers.close()
     project_name = 'Model{num}'.format(num=cont)
     logging.critical('Preparado para lanzar stacks')
