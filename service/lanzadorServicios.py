@@ -82,6 +82,7 @@ auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
 r = requests.get(url=url_catalog, auth=auth)
 content_all = r.json()
 logging.critical('Obtenido el objeto JSON de la API')
+logging.critical(content_all)
 
 content_dockercompose = str(content_all['files']['docker-compose.yml'])
 docker_compose = open('docker-compose.yml', 'w')
