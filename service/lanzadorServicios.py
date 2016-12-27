@@ -3,7 +3,7 @@ import json
 import sys
 import requests
 import itertools
-from subprocess import call
+from subprocess import call, Popen, PIPE
 import threading
 import yaml
 import numpy
@@ -22,8 +22,50 @@ import logging
 # NOTA: Hay que mirar donde echa esos logs. Creo que los saca por salida estandar
 # PROBLEMA: Si hay diferentes containers en el stack habrá que mirar todos los logs y puede ser un jaleo. Pero se puede hacer porque se pueden recorrer en forma de lista.
 
+def getLogsContainer(name_stack):
+
+    logging.critical('Obteniendo logs para'+name_stack)
+    llamadaInspect = Popen(
+        ['./exec/rancher',
+        '--url', url,
+        '--access-key', access_key,
+        '--secret-key', secret_key,
+        'inspect',name_stack],
+        stdout=PIPE)
+    logging.critical('Obteniendo serviceIds')
+    (out, err) = llamadaInspect.communicate()
+    if err:
+        logging.critical('ERROR EN LA LLAMADA A RANCHER INSPECT')
+        raise SyntaxError('Parametros en el yml de entradas incorectos')
+    else:
+        logging.critical('Llamada a rancher inspect correcta')
+
+    info_stack = json.loads(out.decode('utf-8'))
+
+    for service in info_stack['serviceIds']:
+        logging.critical('Logs del servicio'+service)
+        llamadaLogs = Popen(
+            ['./exec/rancher',
+            '--url', url,
+            '--access-key', access_key,
+            '--secret-key', secret_key,
+            'logs',service],
+            stdout=PIPE)
+        logging.critical('Obteniendo serviceIds')
+        (out, err) = llamadaLogs.communicate()
+        if err:
+            logging.critical('ERROR EN LA LLAMADA A RANCHER LOGS')
+            raise SyntaxError('Parametros en el yml de entradas incorectos')
+        else:
+            logging.critical('Llamada a rancher logs correcta')
+        service_logs = out.decode('utf-8')
+        # TODO: Decidir que hacer con los logs
+        print(service_logs)
+
 
 def stopService(name_stack):
+
+    getLogsContainer(name_stack=name_stack)
     call([
         './exec/rancher',
         '--url', url,
@@ -43,7 +85,7 @@ parametros=[]
 parametrosNombre=[]
 threads = []
 # TODO: Hacer configurable el parametro time_out
-time_out = 30.0
+time_out = 60.0
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
