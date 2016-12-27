@@ -12,6 +12,17 @@ import logging
 # TODO: Add an argeparser
 # import argparse or click
 
+
+# TODO: Tecnica para recoger los logs usando la cli
+# El problema principal reside en identificar los containers dentro de los stacks pero se puede hacer
+# comando rancher logs [ID-container] da los logs de ese container
+# Comando rancher inspect [NOMBRE_DEL_STACK] da un json con info del stack. Tiene un apartado que es serviceIds,
+# que da una lista con los ids de los containers del stack.
+# Combinando estos dos comandos podemos obtener los logs usando el mismo nombre que le damos al stack (Model+numero)
+# NOTA: Hay que mirar donde echa esos logs. Creo que los saca por salida estandar
+# PROBLEMA: Si hay diferentes containers en el stack habrá que mirar todos los logs y puede ser un jaleo. Pero se puede hacer porque se pueden recorrer en forma de lista.
+
+
 def stopService(name_stack):
     call([
         './exec/rancher',
