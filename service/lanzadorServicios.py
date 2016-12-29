@@ -108,7 +108,7 @@ threads = []
 # TODO: Hacer configurable el parametro time_out y stack_limit
 sincronizacion = threading.Semaphore(value=stack_limit)
 stack_limit = 100000
-time_stop = 10
+
 
 # TODO: Add argparse
 #Lectura de parametros para las url y las keys
