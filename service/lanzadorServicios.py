@@ -107,7 +107,6 @@ parametrosNombre=[]
 threads = []
 time_stop = 10
 
-
 # TODO: Add argparse
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
