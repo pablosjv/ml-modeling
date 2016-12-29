@@ -199,5 +199,3 @@ for param in itertools.product(*parametros):
     threads[cont].start()
 
     cont = cont + 1
-
-# TODO: Control de ejecucion de los stacks mediante semaphore
