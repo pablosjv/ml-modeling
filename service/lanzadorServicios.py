@@ -106,10 +106,10 @@ parametros=[]
 parametrosNombre=[]
 threads = []
 time_stop = 10
+
 # TODO: Hacer configurable el parametro time_out y stack_limit
 sincronizacion = threading.Semaphore(value=stack_limit)
 stack_limit = 100000
-
 
 # TODO: Add argparse
 #Lectura de parametros para las url y las keys
@@ -199,4 +199,5 @@ for param in itertools.product(*parametros):
     threads[cont].start()
 
     cont = cont + 1
+
 # TODO: Control de ejecucion de los stacks mediante semaphore
