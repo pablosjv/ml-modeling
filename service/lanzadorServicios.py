@@ -22,6 +22,12 @@ import logging
 # NOTA: Hay que mirar donde echa esos logs. Creo que los saca por salida estandar
 # PROBLEMA: Si hay diferentes containers en el stack habrá que mirar todos los logs y puede ser un jaleo. Pero se puede hacer porque se pueden recorrer en forma de lista.
 
+# TODO: Configurar el limite para los experimentos. La técnica es la siguiente:
+# Mediante la CLI de Rancher, se puede acceder como esta explicado anteriormente a los serviceIds que son los containers dentro de un stack.
+# Si hacemos rancher inspect con la CLI en esos containers podemos ver su estado. El json que nos devuelve tiene un apartado que es
+# "state" que puede ser active o inactive. Con esto podemos ver si han acabado o no los stacks. Despues de eso obtener los logs y parar el servicio
+
+
 def getLogsContainer(name_stack):
 
     logging.critical('Obteniendo logs para'+name_stack)
@@ -62,7 +68,7 @@ def getLogsContainer(name_stack):
         # TODO: Decidir que hacer con los logs
         print(service_logs)
 
-
+# Borra el stack
 def stopService(name_stack):
 
     getLogsContainer(name_stack=name_stack)
