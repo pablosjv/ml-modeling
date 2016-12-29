@@ -12,6 +12,38 @@ import logging
 # TODO: Add an argeparser
 # import argparse or click
 
+def stopService(name_stack):
+
+    getLogsContainer(name_stack=name_stack)
+    call([
+        './exec/rancher',
+        '--url', url,
+        '--access-key', access_key,
+        '--secret-key', secret_key,
+        'rm', '--stop', name_stack])
+
+class stack_manager(threading.Thread):
+    def __init__(self, name_stack, timeout):
+        threading.Thread.__init__(self)
+        self.name_stack = name_stack
+        self.timeout = timeout
+
+    def run(self):
+        # self.p = sub.Popen(self.cmd)
+        # self.p.wait()
+
+    def Run(self):
+        self.start()
+        self.join(self.timeout)
+
+        if self.is_alive():
+            self.p.terminate()      #use self.p.kill() if process needs a kill -9
+            self.join()
+
+# TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que
+# interese que escriba en algun lado
+# logger = logging.getLogger('services_launcher')
+
 
 # TODO: Configurar el limite para los experimentos. La técnica es la siguiente:
 # Mediante la CLI de Rancher, se puede acceder como esta explicado anteriormente
@@ -64,37 +96,6 @@ def get_logs_container(name_stack):
 
 
 # Borra el stack TODO: Reformat el nombre->kill stack o algo asi y sin camelcase
-def stopService(name_stack):
-
-    getLogsContainer(name_stack=name_stack)
-    call([
-        './exec/rancher',
-        '--url', url,
-        '--access-key', access_key,
-        '--secret-key', secret_key,
-        'rm', '--stop', name_stack])
-
-class stack_manager(threading.Thread):
-    def __init__(self, name_stack, timeout):
-        threading.Thread.__init__(self)
-        self.name_stack = name_stack
-        self.timeout = timeout
-
-    def run(self):
-        # self.p = sub.Popen(self.cmd)
-        # self.p.wait()
-
-    def Run(self):
-        self.start()
-        self.join(self.timeout)
-
-        if self.is_alive():
-            self.p.terminate()      #use self.p.kill() if process needs a kill -9
-            self.join()
-
-# TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que
-# interese que escriba en algun lado
-# logger = logging.getLogger('services_launcher')
 
 logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 
@@ -198,7 +199,4 @@ for param in itertools.product(*parametros):
     threads[cont].start()
 
     cont = cont + 1
-
-
-
 # TODO: Control de ejecucion de los stacks mediante semaphore
