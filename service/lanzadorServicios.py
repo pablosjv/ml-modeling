@@ -13,19 +13,13 @@ import logging
 # import argparse or click
 
 
-# TODO: Tecnica para recoger los logs usando la cli
-# El problema principal reside en identificar los containers dentro de los stacks pero se puede hacer
-# comando rancher logs [ID-container] da los logs de ese container
-# Comando rancher inspect [NOMBRE_DEL_STACK] da un json con info del stack. Tiene un apartado que es serviceIds,
-# que da una lista con los ids de los containers del stack.
-# Combinando estos dos comandos podemos obtener los logs usando el mismo nombre que le damos al stack (Model+numero)
-# NOTA: Hay que mirar donde echa esos logs. Creo que los saca por salida estandar
-# PROBLEMA: Si hay diferentes containers en el stack habrá que mirar todos los logs y puede ser un jaleo. Pero se puede hacer porque se pueden recorrer en forma de lista.
-
 # TODO: Configurar el limite para los experimentos. La técnica es la siguiente:
-# Mediante la CLI de Rancher, se puede acceder como esta explicado anteriormente a los serviceIds que son los containers dentro de un stack.
-# Si hacemos rancher inspect con la CLI en esos containers podemos ver su estado. El json que nos devuelve tiene un apartado que es
-# "state" que puede ser active o inactive. Con esto podemos ver si han acabado o no los stacks. Despues de eso obtener los logs y parar el servicio
+# Mediante la CLI de Rancher, se puede acceder como esta explicado anteriormente
+# a los serviceIds que son los containers dentro de un stack.
+# Si hacemos rancher inspect con la CLI en esos containers podemos ver su estado.
+# El json que nos devuelve tiene un apartado que es
+# "state" que puede ser active o inactive. Con esto podemos ver si han acabado o
+# no los stacks. Despues de eso obtener los logs y parar el servicio
 
 
 def getLogsContainer(name_stack):
@@ -68,7 +62,9 @@ def getLogsContainer(name_stack):
         # TODO: Decidir que hacer con los logs
         print(service_logs)
 
-# Borra el stack
+
+
+# Borra el stack TODO: Reformat el nombre->kill stack o algo asi
 def stopService(name_stack):
 
     getLogsContainer(name_stack=name_stack)
@@ -79,7 +75,8 @@ def stopService(name_stack):
         '--secret-key', secret_key,
         'rm', '--stop', name_stack])
 
-# TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
+# TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que
+# interese que escriba en algun lado
 # logger = logging.getLogger('services_launcher')
 
 logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
@@ -90,9 +87,12 @@ cont = 0
 parametros=[]
 parametrosNombre=[]
 threads = []
-# TODO: Hacer configurable el parametro time_out
+# TODO: Hacer configurable el parametro time_out y stack_limit
+stack_limit = 100000
 time_out = 60.0
+sincronizacion = threading.Semaphore(value=stack_limit)
 
+# TODO: Add argparse
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
 logging.critical('url de las entradas:'+url_entradas)
@@ -112,6 +112,7 @@ r = requests.get(url=url_catalog, auth=auth)
 content_all = r.json()
 logging.critical('Obtenido el objeto JSON de la API')
 
+# TODO: Context manager -> with statement
 content_dockercompose = str(content_all['files']['docker-compose.yml'])
 docker_compose = open('docker-compose.yml', 'w')
 docker_compose.write(content_dockercompose)
@@ -175,6 +176,7 @@ for param in itertools.product(*parametros):
         '--project-name', project_name,
         'start'])
 
+    # TODO: Control de ejecucion de los stacks mediante semaphore
     threads.append(threading.Timer(time_out, stopService, args=[project_name]))
     threads[cont].start()
 
