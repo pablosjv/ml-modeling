@@ -13,17 +13,8 @@ import logging
 # import argparse or click
 
 
-# TODO: Tecnica para recoger los logs usando la cli
-# El problema principal reside en identificar los containers dentro de los stacks pero se puede hacer
-# comando rancher logs [ID-container] da los logs de ese container
-# Comando rancher inspect [NOMBRE_DEL_STACK] da un json con info del stack. Tiene un apartado que es serviceIds,
-# que da una lista con los ids de los containers del stack.
-# Combinando estos dos comandos podemos obtener los logs usando el mismo nombre que le damos al stack (Model+numero)
-# NOTA: Hay que mirar donde echa esos logs. Creo que los saca por salida estandar
-# PROBLEMA: Si hay diferentes containers en el stack habrá que mirar todos los logs y puede ser un jaleo. Pero se puede hacer porque se pueden recorrer en forma de lista.
-
-
-def stopService(name_stack):
+# Borra el stack TODO: Reformat el nombre->kill stack o algo asi y sin camelcase
+def rm_stack(name_stack, url, access_key, secret_key):
 
     getLogsContainer(name_stack=name_stack)
     call([
@@ -34,7 +25,7 @@ def stopService(name_stack):
         'rm', '--stop', name_stack])
     stacksRunning -= 1
 
-def createService(name_stack):
+def create_stack(name_stack, url, access_key, secret_key):
     call([
         './exec/rancher-compose',
         '--url', url,
@@ -44,7 +35,7 @@ def createService(name_stack):
         '--project-name', name_stack,
         'create'])
 
-def startService(name_stack):
+def start_stack(name_stack, url, access_key, secret_key):
     call([
         './exec/rancher-compose',
         '--url', url,
@@ -54,6 +45,7 @@ def startService(name_stack):
         '--project-name', name_stack,
         'start'])
 
+# TODO: hacer una clase bien definida con las operaciones para stack
 class stack_manager(threading.Thread):
     def __init__(self, name_stack, timeout):
         threading.Thread.__init__(self)
@@ -78,15 +70,15 @@ class stack_manager(threading.Thread):
 
 
 # TODO: Configurar el limite para los experimentos. La técnica es la siguiente:
-# Mediante la CLI de Rancher, se puede acceder como esta explicado anteriormente
-# a los serviceIds que son los containers dentro de un stack.
-# Si hacemos rancher inspect con la CLI en esos containers podemos ver su estado.
-# El json que nos devuelve tiene un apartado que es
-# "state" que puede ser active o inactive. Con esto podemos ver si han acabado o
-# no los stacks. Despues de eso obtener los logs y parar el servicio
+# Mediante la CLI de Rancher, se puede acceder a los serviceIds que son los
+# containers dentro de un stack. Si hacemos rancher inspect con la CLI en esos
+# containers podemos ver su estado.
+# El json que nos devuelve tiene un apartado que es "state" que puede ser active
+# o inactive. Con esto podemos ver si han acabado o no los stacks. Despues de
+# eso obtener los logs y parar el servicio
 
 
-def get_logs_container(name_stack):
+def get_logs_container(name_stack, url, access_key, secret_key):
 
     logging.critical('Obteniendo logs para'+name_stack)
     llamadaInspect = Popen(
@@ -127,7 +119,6 @@ def get_logs_container(name_stack):
         print(service_logs)
 
 
-# Borra el stack TODO: Reformat el nombre->kill stack o algo asi y sin camelcase
 
 logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 
@@ -136,7 +127,7 @@ logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 parametrosNombre=[]
 parametros = []
 threads = []
-time_stop = 10
+time_out = 10
 # TODO: Hacer configurable el parametro time_out y stack_limit
 sincronizacion = threading.Semaphore(value=stack_limit)
 stack_limit = 100000
@@ -219,10 +210,18 @@ for param in itertools.product(*parametros):
     logging.critical('Preparado para lanzar stacks')
 
     #Llamadas a rancher-compose
-    createService(project_name)
-    startService(project_name)
+    create_stack(
+        name_stack=project_name,
+        url=url,
+        access_key=access_key,
+        secret_key=secret_key)
+    start_stack(
+        name_stack=project_name,
+        url=url,
+        access_key=access_key,
+        secret_key=secret_key))
 
-    threads.append(threading.Timer(time_stop, stopService, args=[project_name]))
+    threads.append(threading.Timer(time_out, rm_stack, args=[project_name, url, access_key, secret_key]))
     threads[cont].start()
 
     cont = cont + 1
