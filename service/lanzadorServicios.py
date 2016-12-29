@@ -137,6 +137,9 @@ parametrosNombre=[]
 parametros = []
 threads = []
 time_stop = 10
+# TODO: Hacer configurable el parametro time_out y stack_limit
+sincronizacion = threading.Semaphore(value=stack_limit)
+stack_limit = 100000
 
 # TODO: Add argparse
 #Lectura de parametros para las url y las keys
@@ -203,9 +206,10 @@ logging.critical("Parametros:")
 logging.critical(parametros)
 
 
-#iteracion para lanzar las combinaciones entre los parametros de entrada
+#Iteracion para lanzar las combinaciones entre los parametros de entrada
 for param in itertools.product(*parametros):
     #Escritura del fichero de respuestas
+    # TODO: Context manager -> with statement
     answers = open('answers.txt', 'w')
     for j in range(len(parametrosNombre)):
         answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
@@ -222,5 +226,3 @@ for param in itertools.product(*parametros):
     threads[cont].start()
 
     cont = cont + 1
-
-# HOLA
