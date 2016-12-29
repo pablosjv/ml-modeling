@@ -2,3 +2,4 @@
 /templates/ml-modeling-experiments/0/rancher-compose
 /service/docker-compose.yml
 /service/answers.txt
+/.idea/*
