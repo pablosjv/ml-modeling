@@ -3,7 +3,7 @@ import json
 import sys
 import requests
 import itertools
-from subprocess import call
+from subprocess import call, Popen, PIPE
 import threading
 import yaml
 import numpy
@@ -24,6 +24,8 @@ import logging
 
 
 def stopService(name_stack):
+
+    getLogsContainer(name_stack=name_stack)
     call([
         './exec/rancher',
         '--url', url,
@@ -52,8 +54,80 @@ def startService(name_stack):
         '--project-name', name_stack,
         'start'])
 
-# TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
+class stack_manager(threading.Thread):
+    def __init__(self, name_stack, timeout):
+        threading.Thread.__init__(self)
+        self.name_stack = name_stack
+        self.timeout = timeout
+
+    def run(self):
+        # self.p = sub.Popen(self.cmd)
+        # self.p.wait()
+
+    def Run(self):
+        self.start()
+        self.join(self.timeout)
+
+        if self.is_alive():
+            self.p.terminate()      #use self.p.kill() if process needs a kill -9
+            self.join()
+
+# TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que
+# interese que escriba en algun lado
 # logger = logging.getLogger('services_launcher')
+
+
+# TODO: Configurar el limite para los experimentos. La técnica es la siguiente:
+# Mediante la CLI de Rancher, se puede acceder como esta explicado anteriormente
+# a los serviceIds que son los containers dentro de un stack.
+# Si hacemos rancher inspect con la CLI en esos containers podemos ver su estado.
+# El json que nos devuelve tiene un apartado que es
+# "state" que puede ser active o inactive. Con esto podemos ver si han acabado o
+# no los stacks. Despues de eso obtener los logs y parar el servicio
+
+
+def get_logs_container(name_stack):
+
+    logging.critical('Obteniendo logs para'+name_stack)
+    llamadaInspect = Popen(
+        ['./exec/rancher',
+        '--url', url,
+        '--access-key', access_key,
+        '--secret-key', secret_key,
+        'inspect',name_stack],
+        stdout=PIPE)
+    logging.critical('Obteniendo serviceIds')
+    (out, err) = llamadaInspect.communicate()
+    if err:
+        logging.critical('ERROR EN LA LLAMADA A RANCHER INSPECT')
+        raise SyntaxError('Parametros en el yml de entradas incorectos')
+    else:
+        logging.critical('Llamada a rancher inspect correcta')
+
+    info_stack = json.loads(out.decode('utf-8'))
+
+    for service in info_stack['serviceIds']:
+        logging.critical('Logs del servicio'+service)
+        llamadaLogs = Popen(
+            ['./exec/rancher',
+            '--url', url,
+            '--access-key', access_key,
+            '--secret-key', secret_key,
+            'logs',service],
+            stdout=PIPE)
+        logging.critical('Obteniendo serviceIds')
+        (out, err) = llamadaLogs.communicate()
+        if err:
+            logging.critical('ERROR EN LA LLAMADA A RANCHER LOGS')
+            raise SyntaxError('Parametros en el yml de entradas incorectos')
+        else:
+            logging.critical('Llamada a rancher logs correcta')
+        service_logs = out.decode('utf-8')
+        # TODO: Decidir que hacer con los logs
+        print(service_logs)
+
+
+# Borra el stack TODO: Reformat el nombre->kill stack o algo asi y sin camelcase
 
 logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 
@@ -64,6 +138,7 @@ parametros = []
 threads = []
 time_stop = 10
 
+# TODO: Add argparse
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
 logging.critical('url de las entradas:'+url_entradas)
@@ -85,6 +160,7 @@ content_all = r.json()
 logging.critical('Obtenido el objeto JSON de la API')
 logging.critical(content_all)
 
+# TODO: Context manager -> with statement
 content_dockercompose = str(content_all['files']['docker-compose.yml'])
 docker_compose = open('docker-compose.yml', 'w')
 docker_compose.write(content_dockercompose)
