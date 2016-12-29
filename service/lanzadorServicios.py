@@ -22,7 +22,7 @@ import logging
 # no los stacks. Despues de eso obtener los logs y parar el servicio
 
 
-def getLogsContainer(name_stack):
+def get_logs_container(name_stack):
 
     logging.critical('Obteniendo logs para'+name_stack)
     llamadaInspect = Popen(
@@ -63,8 +63,7 @@ def getLogsContainer(name_stack):
         print(service_logs)
 
 
-
-# Borra el stack TODO: Reformat el nombre->kill stack o algo asi
+# Borra el stack TODO: Reformat el nombre->kill stack o algo asi y sin camelcase
 def stopService(name_stack):
 
     getLogsContainer(name_stack=name_stack)
@@ -74,6 +73,24 @@ def stopService(name_stack):
         '--access-key', access_key,
         '--secret-key', secret_key,
         'rm', '--stop', name_stack])
+
+class stack_manager(threading.Thread):
+    def __init__(self, name_stack, timeout):
+        threading.Thread.__init__(self)
+        self.name_stack = name_stack
+        self.timeout = timeout
+
+    def run(self):
+        # self.p = sub.Popen(self.cmd)
+        # self.p.wait()
+
+    def Run(self):
+        self.start()
+        self.join(self.timeout)
+
+        if self.is_alive():
+            self.p.terminate()      #use self.p.kill() if process needs a kill -9
+            self.join()
 
 # TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que
 # interese que escriba en algun lado
