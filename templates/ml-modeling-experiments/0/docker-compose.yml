@@ -1,16 +1,14 @@
 version: '2'
 services:
   lanzadorServicios:
-    image: ignacioibanez/ml-modeling:1.0.10
+    image: pablosjv/ml-modeling:0.2.1
     environment:
       ACCESS_KEY: ${ACCESS_KEY}
       SECRET_KEY: ${SECRET_KEY}
-      URL: ${URL}
-      URL_CATALOG: ${URL_CATALOG}
       URL_ENTRADAS: ${URL_ENTRADAS}
     stdin_open: true
     entrypoint:
         - sh
         - -c
-        - python lanzadorServicios.py $$URL_ENTRADAS $$ACCESS_KEY $$SECRET_KEY $$URL $$URL_CATALOG
+        - python lanzadorServicios.py $$URL_ENTRADAS $$ACCESS_KEY $$SECRET_KEY
     tty: true
