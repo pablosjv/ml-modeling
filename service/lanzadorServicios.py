@@ -56,7 +56,7 @@ class stack_manager(threading.Thread):
         # self.p = sub.Popen(self.cmd)
         # self.p.wait()
 
-    def Run(self):
+    def Run(self): #Este es el run que hay que llamar
         self.start()
         self.join(self.timeout)
 
